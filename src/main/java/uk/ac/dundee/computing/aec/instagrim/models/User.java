@@ -79,6 +79,101 @@ public class User {
     
     return false;  
     }
+    
+        public String getName(String username){
+        
+            String name = "";
+        
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select first_name from userprofiles where login =?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        name));
+        if (rs.isExhausted()) {
+            System.out.println("No Images returned");
+            
+        } else {
+            for (Row row : rs) {
+               
+                name  = row.getString("first_name");
+               
+            }
+        }
+        return name; 
+        }
+        public String getLastName(String username){
+        
+            String lastname = "";
+        
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select last_name from userprofiles where login =?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        username));
+        if (rs.isExhausted()) {
+            System.out.println("No Images returned");
+            
+        } else {
+            for (Row row : rs) {
+               
+                lastname  = row.getString("last_name");
+               
+            }
+        }
+    
+    return lastname;  
+    }
+    
+        public String getAddress(String username){
+        
+            String address = "";
+        
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select address from userprofiles where login =?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        address));
+        if (rs.isExhausted()) {
+            System.out.println("No Images returned");
+            
+        } else {
+            for (Row row : rs) {
+               
+                address  = row.getString("address");
+               
+            }
+        }
+        return address; 
+        }
+        public String getEmail(String username){
+        
+            String email = "";
+        
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select email from userprofiles where login =?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        email));
+        if (rs.isExhausted()) {
+            System.out.println("No Images returned");
+            
+        } else {
+            for (Row row : rs) {
+               
+                email  = row.getString("email");
+               
+            }
+        }
+        return email; 
+        }
        public void setCluster(Cluster cluster) {
         this.cluster = cluster;
     }

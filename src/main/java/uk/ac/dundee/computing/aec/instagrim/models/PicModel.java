@@ -60,24 +60,24 @@ public class PicModel {
              improvement or difference******************/
             
             String types[]=Convertors.SplitFiletype(type);
-            //ByteBuffer buffer = ByteBuffer.wrap(b);
-            //int length = b.length;
+            ByteBuffer buffer = ByteBuffer.wrap(b);
+            int length = b.length;
             java.util.UUID picid = convertor.getTimeUUID();
             
             //The following is a quick and dirty way of doing this, will fill the disk quickly !
             Boolean success = (new File("/var/tmp/instagrim/")).mkdirs();
-            File file = (new File("/var/tmp/instagrim" + picid));
-            //FileOutputStream output = new FileOutputStream(new File("/var/tmp/instagrim/" + picid));
+            //File file = (new File("/var/tmp/instagrim" + picid));
+            FileOutputStream output = new FileOutputStream(new File("/var/tmp/instagrim/" + picid));
 
 
-            FileOutputStream fos = new FileOutputStream(file);   
+            /*FileOutputStream fos = new FileOutputStream(file);   
             byte[] buffer2;   
             buffer2 = new byte[1024];
             int i = 0;   
             while( (i = is.read(buffer2)) != -1)   
             {   
                 fos.write(buffer2,0,i);   
-            }  
+            }  */
             
             //output.write(b);
             byte []  thumbb = picresize(picid.toString(),types[1]);

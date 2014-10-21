@@ -81,7 +81,7 @@ public class Image extends HttpServlet {
         }
         switch (command) {
             case 1:
-                DisplayImage(Convertors.DISPLAY_PROCESSED,args[2], response);
+                DisplayImage(Convertors.DISPLAY_IMAGE,args[2], response);
                 break;
             case 2:
                 DisplayImageList(args[2], request, response);
