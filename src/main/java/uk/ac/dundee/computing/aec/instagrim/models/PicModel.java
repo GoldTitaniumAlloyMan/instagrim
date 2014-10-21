@@ -56,7 +56,8 @@ public class PicModel {
 
             /***********I added an output stream here and another buffer in the 
              hope that this was some improvement on what was there. Going to 
-             look in to this more ******************/
+             look in to this more. I do not think what I did has made any 
+             improvement or difference******************/
             
             String types[]=Convertors.SplitFiletype(type);
             //ByteBuffer buffer = ByteBuffer.wrap(b);
@@ -78,7 +79,7 @@ public class PicModel {
                 fos.write(buffer2,0,i);   
             }  
             
-            output.write(b);
+            //output.write(b);
             byte []  thumbb = picresize(picid.toString(),types[1]);
             int thumblength= thumbb.length;
             ByteBuffer thumbbuf=ByteBuffer.wrap(thumbb);
