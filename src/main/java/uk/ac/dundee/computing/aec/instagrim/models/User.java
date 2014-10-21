@@ -27,22 +27,21 @@ public class User {
         
     }
     
-    public boolean RegisterUser(String username, String Password){
+    public boolean RegisterUser(String username, String password, String email, String address, String firstname, String lastname){
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
         String EncodedPassword=null;
         try {
-            EncodedPassword= sha1handler.SHA1(Password);
+            EncodedPassword= sha1handler.SHA1(password);
         }catch (UnsupportedEncodingException | NoSuchAlgorithmException et){
             System.out.println("Can't check your password");
             return false;
         }
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("insert into userprofiles (login,password) Values(?,?)");
-       
+        PreparedStatement ps = session.prepare("insert into userprofiles (login,password,email,addresses,first_name,last_name) Values(?,?,?,?,?,?)");
         BoundStatement boundStatement = new BoundStatement(ps);
         session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        username,EncodedPassword));
+                        username,EncodedPassword,email,address,firstname,lastname));
         //We are assuming this always works.  Also a transaction would be good here !
         
         return true;
@@ -82,7 +81,7 @@ public class User {
     
         public String getName(String username){
         
-            String name = "";
+            String firstname = "";
         
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select first_name from userprofiles where login =?");
@@ -90,18 +89,18 @@ public class User {
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        name));
+                        firstname));
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
             
         } else {
             for (Row row : rs) {
                
-                name  = row.getString("first_name");
+                firstname  = row.getString("first_name");
                
             }
         }
-        return name; 
+        return firstname; 
         }
         public String getLastName(String username){
         
@@ -133,7 +132,7 @@ public class User {
             String address = "";
         
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("select address from userprofiles where login =?");
+        PreparedStatement ps = session.prepare("select addresses from userprofiles where login =?");
         ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
@@ -145,7 +144,7 @@ public class User {
         } else {
             for (Row row : rs) {
                
-                address  = row.getString("address");
+                address  = row.getString("addresses");
                
             }
         }
