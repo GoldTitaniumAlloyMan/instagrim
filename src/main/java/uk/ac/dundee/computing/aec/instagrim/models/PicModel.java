@@ -79,7 +79,7 @@ public class PicModel {
                 fos.write(buffer2,0,i);   
             }  */
             
-            //output.write(b);
+            output.write(b);
             byte []  thumbb = picresize(picid.toString(),types[1]);
             int thumblength= thumbb.length;
             ByteBuffer thumbbuf=ByteBuffer.wrap(thumbb);
