@@ -173,6 +173,29 @@ public class User {
         }
         return email; 
         }
+        public boolean doesExist(String username){
+            
+            String email = "";
+
+            Session session = cluster.connect("instagrim");
+            PreparedStatement ps = session.prepare("select email from userprofiles where login =?");
+            ResultSet rs = null;
+            BoundStatement boundStatement = new BoundStatement(ps);
+            rs = session.execute( // this is where the query is executed
+                    boundStatement.bind( // here you are binding the 'boundStatement'
+                            username));
+            if (rs.isExhausted()) {
+                return false;
+
+            } else {
+                for (Row row : rs) {
+
+                    email = row.getString("email");
+
+                }
+            }
+            return true;
+        }
        public void setCluster(Cluster cluster) {
         this.cluster = cluster;
     }

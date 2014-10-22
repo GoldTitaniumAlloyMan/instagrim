@@ -54,10 +54,15 @@ public class Register extends HttpServlet {
         
         User us=new User();
         us.setCluster(cluster);
+        if (us.doesExist(username)){
+            response.sendRedirect("/Instagrim/register.jsp");
+        }else{
+            
+        
         us.RegisterUser(username, password, email, addresses, firstname, lastname);
         
 	response.sendRedirect("/Instagrim");
-        
+        }
     }
 
     /**
