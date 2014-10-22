@@ -89,7 +89,7 @@ public class User {
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        firstname));
+                        username));
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
             
@@ -137,7 +137,7 @@ public class User {
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        address));
+                        username));
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
             
@@ -160,7 +160,7 @@ public class User {
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        email));
+                        username));
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
             
