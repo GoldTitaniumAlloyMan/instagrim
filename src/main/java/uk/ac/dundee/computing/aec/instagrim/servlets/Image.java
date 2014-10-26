@@ -125,6 +125,7 @@ public class Image extends HttpServlet {
         out.close();
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         for (Part part : request.getParts()) {
             System.out.println("Part Name " + part.getName());

@@ -47,9 +47,13 @@ public final class Keyspaces {
                     + "      first_name text,\n"
                     + "      last_name text,\n"
                     + "      email text,\n"
-                    + "      addresses  text,\n"
-                    + "      following text\n"
+                    + "      addresses  text\n"
                     + "  );";
+            String CreateUserFollowing = "CREATE TABLE if not exists instagrim.userfollowing (\n"
+                    + "     user text, \n"
+                    + "     userfollows, text\n"
+                    + "     PRIMARY KEY (user,userfollows)\n"
+                    + " );";
             Session session = c.connect();
             try {
                 PreparedStatement statement = session
@@ -93,6 +97,12 @@ public final class Keyspaces {
                 session.execute(cqlQuery);
             } catch (Exception et) {
                 System.out.println("Can't create Address Profile " + et);
+            }
+            try {
+                SimpleStatement cqlQuery = new SimpleStatement(CreateUserFollowing);
+                session.execute(cqlQuery);
+            } catch (Exception et) {
+                System.out.println("Can't create User Following " + et);
             }
             session.close();
 

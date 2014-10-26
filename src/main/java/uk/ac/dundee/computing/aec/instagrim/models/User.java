@@ -27,17 +27,14 @@ public class User {
         
     }
     
-    public boolean followUser(String username){
-       
+    public void followUser(String user, String userfollows){
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("insert into userprofiles (following) Values(?)");
+        PreparedStatement ps = session.prepare("insert into userfollowing (user,userfollows) Values(?,?)");
+        ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
-        session.execute( // this is where the query is executed
+        rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        username));
-        //We are assuming this always works.  Also a transaction would be good here !
-        
-        return true;
+                        user,userfollows));
     }
     
     public boolean RegisterUser(String username, String password, String email, String address, String firstname, String lastname){

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
@@ -16,9 +15,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
-import uk.ac.dundee.computing.aec.instagrim.models.FollowUser;
 import uk.ac.dundee.computing.aec.instagrim.models.User;
+import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
 /**
  *
@@ -26,17 +26,26 @@ import uk.ac.dundee.computing.aec.instagrim.models.User;
  */
 @WebServlet(name = "Follow", urlPatterns = {"/Follow"})
 public class Follow extends HttpServlet {
-    Cluster cluster=null;
+
+    Cluster cluster = null;
+
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
     }
 
+    private void error(String error, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = null;
+        out = new PrintWriter(response.getOutputStream());
+        out.println(error);
+        out.println("Press the 'back' button to go back to login page");
 
-
+        out.close();
+        return;
+    }
 
     /**
-     * Handles the HTTP <code>FIND</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -46,20 +55,18 @@ public class Follow extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username=request.getParameter("username");
-        
-        User us=new User();
+
+        String user = request.getParameter("user");
+        String userfollows = request.getParameter("userfollows");
+
+        User us = new User();
         us.setCluster(cluster);
-        if (us.doesExist(username)){
-            response.sendRedirect("/Instagrim/register");
-        }else{
-            
-        
-        us.followUser(username);
-        
-	response.sendRedirect("/Instagrim/");
+        us.followUser(user, userfollows);
+        HttpSession session = request.getSession();
+        System.out.println("Session in servlet " + session);
+
     }
-    }
+
     /**
      * Returns a short description of the servlet.
      *
@@ -69,6 +76,5 @@ public class Follow extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
 
 }

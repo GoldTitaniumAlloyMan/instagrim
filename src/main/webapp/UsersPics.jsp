@@ -22,10 +22,11 @@
         </header>
         
         <h3>Follow a User</h3>
-            <form name="input" method="GET">
-                Username: <input type="text" name="username"><br>
-                <input type="submit" value="follow">
-            </form>
+        <form name="input" action="/Instagrim/Follow" method="post">
+            <input type="text" name="user" value="<%=lg.getUsername()%>" hidden>
+            <input type="text" name="usertofollow">
+            <input type="submit" value="Follow">
+        </form>
         
         <li class="footer"><a href="/Instagrim">Home</a></li>
         <nav>
