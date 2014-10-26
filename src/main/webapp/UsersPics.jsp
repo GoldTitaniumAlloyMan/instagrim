@@ -20,6 +20,13 @@
         <h1>InstaGrim ! </h1>
         <h2><% out.println(lg.getUsername()); %></h2>
         </header>
+        
+        <h3>Follow a User</h3>
+            <form name="input" method="GET">
+                Username: <input type="text" name="username"><br>
+                <input type="submit" value="follow">
+            </form>
+        
         <li class="footer"><a href="/Instagrim">Home</a></li>
         <nav>
             <ul>

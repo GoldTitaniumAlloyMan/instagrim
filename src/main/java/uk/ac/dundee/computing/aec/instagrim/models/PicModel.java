@@ -66,26 +66,17 @@ public class PicModel {
             
             //The following is a quick and dirty way of doing this, will fill the disk quickly !
             Boolean success = (new File("/var/tmp/instagrim/")).mkdirs();
-            //File file = (new File("/var/tmp/instagrim" + picid));
+            
             FileOutputStream output = new FileOutputStream(new File("/var/tmp/instagrim/" + picid));
 
-
-            /*FileOutputStream fos = new FileOutputStream(file);   
-            byte[] buffer2;   
-            buffer2 = new byte[1024];
-            int i = 0;   
-            while( (i = is.read(buffer2)) != -1)   
-            {   
-                fos.write(buffer2,0,i);   
-            }  */
             
             output.write(b);
             byte []  thumbb = picresize(picid.toString(),types[1]);
             int thumblength= thumbb.length;
             ByteBuffer thumbbuf=ByteBuffer.wrap(thumbb);
-            byte[] processedb = picdecolour(picid.toString(),types[1]);
-            ByteBuffer processedbuf=ByteBuffer.wrap(processedb);
-            int processedlength=processedb.length;
+            //byte[] processedb = picdecolour(picid.toString(),types[1]);
+            //ByteBuffer processedbuf=ByteBuffer.wrap(processedb);
+            //int processedlength=processedb.length;
             Session session = cluster.connect("instagrim");
 
             PreparedStatement psInsertPic = session.prepare("insert into pics ( picid, image,thumb,processed, user, interaction_time,imagelength,thumblength,processedlength,type,name) values(?,?,?,?,?,?,?,?,?,?,?)");
@@ -94,7 +85,7 @@ public class PicModel {
             BoundStatement bsInsertPicToUser = new BoundStatement(psInsertPicToUser);
 
             Date DateAdded = new Date();
-            session.execute(bsInsertPic.bind(picid, buffer, thumbbuf,processedbuf, user, DateAdded, length,thumblength,processedlength, type, name));
+            session.execute(bsInsertPic.bind(picid, buffer, thumbbuf,null, user, DateAdded, length,thumblength,null, type, name));
             session.execute(bsInsertPicToUser.bind(picid, user, DateAdded));
             session.close();
 
