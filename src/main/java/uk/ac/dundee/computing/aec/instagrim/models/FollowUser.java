@@ -25,6 +25,10 @@ public class FollowUser {
         
     }
     
+    public void setCluster(Cluster cluster) {
+        this.cluster = cluster;
+    }
+    
     public boolean RegisterUser(String username){
        
         Session session = cluster.connect("instagrim");
@@ -61,8 +65,5 @@ public class FollowUser {
             }
             return true;
         }
-    
-    public void setCluster(Cluster cluster) {
-        this.cluster = cluster;
-    }
+
 }

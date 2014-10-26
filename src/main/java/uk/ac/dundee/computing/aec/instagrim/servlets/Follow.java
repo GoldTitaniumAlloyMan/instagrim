@@ -48,14 +48,14 @@ public class Follow extends HttpServlet {
             throws ServletException, IOException {
         String username=request.getParameter("username");
         
-        FollowUser fu=new FollowUser();
-        fu.setCluster(cluster);
-        if (fu.doesExist(username)){
+        User us=new User();
+        us.setCluster(cluster);
+        if (us.doesExist(username)){
             response.sendRedirect("/Instagrim/register");
         }else{
             
         
-        fu.RegisterUser(username);
+        us.followUser(username);
         
 	response.sendRedirect("/Instagrim/");
     }

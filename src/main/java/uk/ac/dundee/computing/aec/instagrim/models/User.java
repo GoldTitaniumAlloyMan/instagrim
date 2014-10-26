@@ -27,6 +27,19 @@ public class User {
         
     }
     
+    public boolean followUser(String username){
+       
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("insert into userprofiles (following) Values(?)");
+        BoundStatement boundStatement = new BoundStatement(ps);
+        session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        username));
+        //We are assuming this always works.  Also a transaction would be good here !
+        
+        return true;
+    }
+    
     public boolean RegisterUser(String username, String password, String email, String address, String firstname, String lastname){
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
         String EncodedPassword=null;
