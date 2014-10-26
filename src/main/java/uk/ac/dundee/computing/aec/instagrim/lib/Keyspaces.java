@@ -51,7 +51,7 @@ public final class Keyspaces {
                     + "  );";
             String CreateUserFollowing = "CREATE TABLE if not exists instagrim.userfollowing (\n"
                     + "     user text, \n"
-                    + "     userfollows, text\n"
+                    + "     userfollows text,\n"
                     + "     PRIMARY KEY (user,userfollows)\n"
                     + " );";
             Session session = c.connect();

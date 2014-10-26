@@ -24,7 +24,7 @@
         <h3>Follow a User</h3>
         <form name="input" action="/Instagrim/Follow" method="post">
             <input type="text" name="user" value="<%=lg.getUsername()%>" hidden>
-            <input type="text" name="usertofollow">
+            <input type="text" name="userfollows">
             <input type="submit" value="Follow">
         </form>
         
