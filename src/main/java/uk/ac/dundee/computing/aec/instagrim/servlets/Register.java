@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
@@ -25,14 +24,13 @@ import uk.ac.dundee.computing.aec.instagrim.models.User;
  */
 @WebServlet(name = "Register", urlPatterns = {"/Register"})
 public class Register extends HttpServlet {
-    Cluster cluster=null;
+
+    Cluster cluster = null;
+
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
     }
-
-
-
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -45,23 +43,22 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username=request.getParameter("username");
-        String password=request.getParameter("password");
-        String firstname=request.getParameter("first_name");
-        String lastname=request.getParameter("last_name");
-        String addresses=request.getParameter("addresses");
-        String email=request.getParameter("email");
-        
-        User us=new User();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String firstname = request.getParameter("first_name");
+        String lastname = request.getParameter("last_name");
+        String addresses = request.getParameter("addresses");
+        String email = request.getParameter("email");
+
+        User us = new User();
         us.setCluster(cluster);
-        if (us.doesExist(username)){
+        if (us.doesExist(username)) {
             response.sendRedirect("/Instagrim/register.jsp");
-        }else{
-            
-        
-        us.RegisterUser(username, password, email, addresses, firstname, lastname);
-        
-	response.sendRedirect("/Instagrim");
+        } else {
+
+            us.RegisterUser(username, password, email, addresses, firstname, lastname);
+
+            response.sendRedirect("/Instagrim");
         }
     }
 

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package uk.ac.dundee.computing.aec.instagrim.models;
 
 import com.datastax.driver.core.BoundStatement;
@@ -22,28 +21,30 @@ import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
  * @author Administrator
  */
 public class User {
+
     Cluster cluster;
-    public User(){
-        
+
+    public User() {
+
     }
-    
-    public void followUser(String user1, String userfollows1){
+
+    public void followUser(String user1, String userfollows1) {
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("insert into userfollowing (user,userfollows) Values(?,?)");
         ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        user1,userfollows1));
+                        user1, userfollows1));
     }
-    
+
     public boolean doesFollow(String user1, String userfollows1) {
         if (user1.equals(userfollows1)) {
             return true;
         }
         java.util.LinkedList<String> follows = new java.util.LinkedList<>();
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("select user from following where user=?");
+        PreparedStatement ps = session.prepare("select userfollows from userfollowing where user=?");
         ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
@@ -55,14 +56,14 @@ public class User {
         } else {
             for (Row row : rs) {
 
-                follows.add(row.getString("user"));
+                follows.add(row.getString("userfollows"));
 
             }
 
             for (int i = 0; i < follows.size(); i++) {
                 System.out.println("looping");
                 System.out.println(user1 + userfollows1);
-                if (userfollows1.equals(follows.get(i))) {
+                if (user1.equals(follows.get(i))) {
                     System.out.println(user1 + "  " + userfollows1);
                     return true;
                 }
@@ -72,13 +73,13 @@ public class User {
 
         }
     }
-    
-    public boolean RegisterUser(String username, String password, String email, String address, String firstname, String lastname){
-        AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
-        String EncodedPassword=null;
+
+    public boolean RegisterUser(String username, String password, String email, String address, String firstname, String lastname) {
+        AeSimpleSHA1 sha1handler = new AeSimpleSHA1();
+        String EncodedPassword = null;
         try {
-            EncodedPassword= sha1handler.SHA1(password);
-        }catch (UnsupportedEncodingException | NoSuchAlgorithmException et){
+            EncodedPassword = sha1handler.SHA1(password);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException et) {
             System.out.println("Can't check your password");
             return false;
         }
@@ -87,18 +88,18 @@ public class User {
         BoundStatement boundStatement = new BoundStatement(ps);
         session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        username,EncodedPassword,email,address,firstname,lastname));
+                        username, EncodedPassword, email, address, firstname, lastname));
         //We are assuming this always works.  Also a transaction would be good here !
-        
+
         return true;
     }
-    
-    public boolean IsValidUser(String username, String Password){
-        AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
-        String EncodedPassword=null;
+
+    public boolean IsValidUser(String username, String Password) {
+        AeSimpleSHA1 sha1handler = new AeSimpleSHA1();
+        String EncodedPassword = null;
         try {
-            EncodedPassword= sha1handler.SHA1(Password);
-        }catch (UnsupportedEncodingException | NoSuchAlgorithmException et){
+            EncodedPassword = sha1handler.SHA1(Password);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException et) {
             System.out.println("Can't check your password");
             return false;
         }
@@ -114,21 +115,21 @@ public class User {
             return false;
         } else {
             for (Row row : rs) {
-               
+
                 String StoredPass = row.getString("password");
-                if (StoredPass.compareTo(EncodedPassword) == 0)
+                if (StoredPass.compareTo(EncodedPassword) == 0) {
                     return true;
+                }
             }
         }
-   
-    
-    return false;  
+
+        return false;
     }
-    
-        public String getName(String username){
-        
-            String firstname = "";
-        
+
+    public String getName(String username) {
+
+        String firstname = "";
+
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select first_name from userprofiles where login =?");
         ResultSet rs = null;
@@ -138,20 +139,21 @@ public class User {
                         username));
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
-            
+
         } else {
             for (Row row : rs) {
-               
-                firstname  = row.getString("first_name");
-               
+
+                firstname = row.getString("first_name");
+
             }
         }
-        return firstname; 
-        }
-        public String getLastName(String username){
-        
-            String lastname = "";
-        
+        return firstname;
+    }
+
+    public String getLastName(String username) {
+
+        String lastname = "";
+
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select last_name from userprofiles where login =?");
         ResultSet rs = null;
@@ -161,22 +163,22 @@ public class User {
                         username));
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
-            
+
         } else {
             for (Row row : rs) {
-               
-                lastname  = row.getString("last_name");
-               
+
+                lastname = row.getString("last_name");
+
             }
         }
-    
-    return lastname;  
+
+        return lastname;
     }
-    
-        public String getAddress(String username){
-        
-            String address = "";
-        
+
+    public String getAddress(String username) {
+
+        String address = "";
+
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select addresses from userprofiles where login =?");
         ResultSet rs = null;
@@ -186,20 +188,21 @@ public class User {
                         username));
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
-            
+
         } else {
             for (Row row : rs) {
-               
-                address  = row.getString("addresses");
-               
+
+                address = row.getString("addresses");
+
             }
         }
-        return address; 
-        }
-        public String getEmail(String username){
-        
-            String email = "";
-        
+        return address;
+    }
+
+    public String getEmail(String username) {
+
+        String email = "";
+
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select email from userprofiles where login =?");
         ResultSet rs = null;
@@ -209,42 +212,43 @@ public class User {
                         username));
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
-            
+
         } else {
             for (Row row : rs) {
-               
-                email  = row.getString("email");
-               
+
+                email = row.getString("email");
+
             }
         }
-        return email; 
-        }
-        public boolean doesExist(String username){
-            
-            String email = "";
+        return email;
+    }
 
-            Session session = cluster.connect("instagrim");
-            PreparedStatement ps = session.prepare("select email from userprofiles where login =?");
-            ResultSet rs = null;
-            BoundStatement boundStatement = new BoundStatement(ps);
-            rs = session.execute( // this is where the query is executed
-                    boundStatement.bind( // here you are binding the 'boundStatement'
-                            username));
-            if (rs.isExhausted()) {
-                return false;
+    public boolean doesExist(String username) {
 
-            } else {
-                for (Row row : rs) {
+        String email = "";
 
-                    email = row.getString("email");
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select email from userprofiles where login =?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        username));
+        if (rs.isExhausted()) {
+            return false;
 
-                }
+        } else {
+            for (Row row : rs) {
+
+                email = row.getString("email");
+
             }
-            return true;
         }
-       public void setCluster(Cluster cluster) {
+        return true;
+    }
+
+    public void setCluster(Cluster cluster) {
         this.cluster = cluster;
     }
 
-    
 }

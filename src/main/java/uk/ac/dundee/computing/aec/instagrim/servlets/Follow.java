@@ -62,7 +62,7 @@ public class Follow extends HttpServlet {
         User us = new User();
         us.setCluster(cluster);
         us.followUser(user, userfollows);
-        
+
         response.sendRedirect("/Instagrim/");
     }
 
