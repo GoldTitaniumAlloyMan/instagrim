@@ -17,6 +17,7 @@ public class Pic {
     private ByteBuffer bImage = null;
     private int length;
     private String type;
+    private String user;
     private java.util.UUID UUID=null;
     
     public void Pic() {
@@ -32,6 +33,12 @@ public class Pic {
         this.bImage = bImage;
         this.length = length;
         this.type=type;
+    }
+    public void setUser(String user){
+        this.user = user;
+    }
+    public String getUser(){
+        return user;
     }
 
     public ByteBuffer getBuffer() {

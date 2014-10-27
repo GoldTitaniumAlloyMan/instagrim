@@ -62,9 +62,8 @@ public class Follow extends HttpServlet {
         User us = new User();
         us.setCluster(cluster);
         us.followUser(user, userfollows);
-        HttpSession session = request.getSession();
-        System.out.println("Session in servlet " + session);
-
+        
+        response.sendRedirect("/Instagrim/");
     }
 
     /**

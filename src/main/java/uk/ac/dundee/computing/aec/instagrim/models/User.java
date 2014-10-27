@@ -37,6 +37,42 @@ public class User {
                         user1,userfollows1));
     }
     
+    public boolean doesFollow(String user1, String userfollows1) {
+        if (user1.equals(userfollows1)) {
+            return true;
+        }
+        java.util.LinkedList<String> follows = new java.util.LinkedList<>();
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select user from following where user=?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        user1));
+        if (rs.isExhausted()) {
+            System.out.println("No Images returned");
+            return false;
+        } else {
+            for (Row row : rs) {
+
+                follows.add(row.getString("user"));
+
+            }
+
+            for (int i = 0; i < follows.size(); i++) {
+                System.out.println("looping");
+                System.out.println(user1 + userfollows1);
+                if (userfollows1.equals(follows.get(i))) {
+                    System.out.println(user1 + "  " + userfollows1);
+                    return true;
+                }
+
+            }
+            return false;
+
+        }
+    }
+    
     public boolean RegisterUser(String username, String password, String email, String address, String firstname, String lastname){
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
         String EncodedPassword=null;
